@@ -1,0 +1,17 @@
+<div class="searchBar"><input type="text" ng-model="q" ng-keypress="checkSubmit($event)" /><button ng-click="searchForPosts(q)">search</button></div>
+<br/>
+<div id="searchResult">
+    <div class="forceRight close" ng-click="hideResults()">&nbsp;X&nbsp;</div>
+    <span>Search results for: '<i>{{searched}}</i>'<br/><br/>
+    <div ng-repeat="title in titleList">
+        <a ng-href="#/documentation/{{title.id}}">{{title.title}}</a><br/>
+    </div>
+</div>
+<div style="text-align: justify;">
+    <br/>
+    <b>{{post.title}}</b><br/>
+    <br/>
+    <div ng-bind-html="post.content">{{post.content}}</div>
+    <br/><br/>
+    Last Updated: {{post.lastUpdated}}
+</div>
