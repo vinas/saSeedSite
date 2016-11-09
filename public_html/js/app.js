@@ -15,16 +15,12 @@ var app = angular.module('saSeed', ['ngRoute'])
 				redirectTo: '/home'
 			})
 			.when('/install', {
-				templateUrl: 'templates/install.html'
+				templateUrl: 'templates/install.html',
+				controller: 'installController'
 			})
-			.when('/install/linux', {
-				templateUrl: 'templates/install-linux.html'
-			})
-			.when('/install/windows', {
-				templateUrl: 'templates/install-windows.html'
-			})
-			.when('/install/xampp-doc-root', {
-				templateUrl: 'templates/xampp-doc-root.html'
+			.when('/install/:id', {
+				templateUrl: 'templates/install.html',
+				controller: 'installController'
 			})
 			.when('/documentation', {
 				templateUrl: 'templates/documentation.html',
