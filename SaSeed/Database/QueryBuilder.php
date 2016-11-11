@@ -6,7 +6,7 @@
 *
 * @author Vinas de Andrade <vinas.andrade@gmail.com>
 * @since 2016/10/25
-* @version 1.16.1107
+* @version 1.16.1111
 * @license SaSeed\license.txt
 *
 */
@@ -42,7 +42,7 @@ class QueryBuilder
 	}
 
 	/**
-	* Set manually straight to the query the columns to be selected
+	* Set the columns to be selected manually straight to the query 
 	*
 	* @param string
 	* @return void
@@ -50,7 +50,7 @@ class QueryBuilder
 	*/
 	public function rawSelect($select = false)
 	{
-		if (isRawInputValid($select)) {
+		if ($this->isRawInputValid($select)) {
 			$this->query->setSelect($select);
 			return;
 		}
@@ -70,7 +70,7 @@ class QueryBuilder
 	*/
 	public function rawFrom($from = false)
 	{
-		if (isRawInputValid($from)){
+		if ($this->isRawInputValid($from)){
 			$this->query->setFrom($from);
 			return;
 		}
@@ -90,7 +90,7 @@ class QueryBuilder
 	*/
 	public function rawWhere($where = false)
 	{
-		if (isRawInputValid($where)) {
+		if ($this->isRawInputValid($where)) {
 			$this->query->setWhere($where);
 			return;
 		}
@@ -260,11 +260,35 @@ class QueryBuilder
 				__FUNCTION__,
 				'Error: Invalid where clause. It must be sent as an array: [colName, comparator, value, opt tableAlias].'
 			);
+			return;
 		}
 		Exceptions::throwNew(
 			__CLASS__,
 			__FUNCTION__,
 			'Error: Cannot be the first condition declared. Use method where() instead.'
+		);
+	}
+
+	/**
+	* Defines a field to order by
+	*
+	* @param string
+	* @param string
+	* @return void
+	* @throws new exception
+	*/
+	public function orderBy($column, $alias = false)
+	{
+		if ($column) {
+			$this->query->setOrderBy(
+				($alias) ? $alias.'.'.$column : $column
+			);
+			return;
+		}
+		Exceptions::throwNew(
+			__CLASS__,
+			__FUNCTION__,
+			'Error: No column name received.'
 		);
 	}
 
