@@ -1,16 +1,33 @@
-app.controller('docController', function($scope, $routeParams, $sce, PostService, PostFactory) {
+app.controller('docController', docController);
+
+function docController($scope, $routeParams, $sce, PostService, PostFactory) {
+    
     $scope.post = {};
 
-    $scope.getPost = function(id)
+    $scope.getPost = getPost;
+    $scope.searchForPosts = searchForPosts;
+    $scope.hideResults = hideResults;
+    $scope.checkSubmit = checkSubmit;
+
+    init();
+
+    function init()
+    {
+        $scope.titleList = [];
+        $scope.searched = '';
+        getPost(($routeParams.id) ? $routeParams.id : 1);
+    }
+
+    function getPost(id)
     {
         PostFactory.get(id).then(function(res) {
             $scope.hideResults();
             $scope.post = res.data;
             $scope.post.content = $sce.trustAsHtml($scope.post.content);
         });
-    };
+    }
 
-    $scope.searchForPosts = function(q)
+    function searchForPosts(q)
     {
         $scope.hideResults();
         PostService.getTitleList(q).then(function(res) {
@@ -18,25 +35,17 @@ app.controller('docController', function($scope, $routeParams, $sce, PostService
             $scope.titleList = res.data;
             $('#searchResult').show(showTime);
         });
-    };
+    }
 
-    $scope.hideResults = function()
+    function hideResults()
     {
         $('#searchResult').hide(hideTime);
-    };
+    }
 
-    $scope.checkSubmit = function(keyEvent)
+    function checkSubmit(keyEvent)
     {
         if (keyEvent.which === 13)
             $scope.searchForPosts($scope.q);
-    };
+    }
 
-    var init = function()
-    {
-        $scope.titleList = [];
-        $scope.searched = '';
-        $scope.getPost(($routeParams.id) ? $routeParams.id : 1);
-    };
-
-    init();
-});
+}
